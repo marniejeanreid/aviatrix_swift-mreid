@@ -11,8 +11,13 @@ import Foundation
 class Aviatrix {
     
     var author = " "
-    var location = "St. Louis"
+    var location = "SLC"
     //COULDN'T create a blank variable then initialize it for current location.... so I couldn't get it to say where I landed.. Why not?
+    var distanceTraveled = 0
+    var maxFuel = 5000
+    var fuelLevel = 5000.0
+    var milesPerGallon = 0.4
+    var fuelCost = 0.0
     
     init (authorName : String){
         author = authorName
@@ -25,11 +30,18 @@ class Aviatrix {
         return running
     }
     
-    func refuel() {
+    func refuel() -> Double {
+        let fuelNeeded = Double(Double(maxFuel) - Double(fuelLevel))
+        let data = AviatrixData()
+        fuelCost += fuelNeeded * data.fuelPrices[location]!
         
+        return fuelNeeded
     }
     
     func flyTo(destination : String) {
+        distanceTraveled += distanceTo(target: destination, current: location)
+        let fuelUsed = Double(distanceTraveled) / milesPerGallon
+        fuelLevel -= fuelUsed
         location = destination
     }
     

@@ -11,13 +11,13 @@ import Foundation
 func gauges(myPlane : Aviatrix) {
     print("Reading the gauges...")
     print(" ")
-//    print("| Running:  | ✅")
+    print("| Running:  | ✅")
     print("| Location:  | \(myPlane.location)")
-//    print("| Distance:  | \(myPlane.distanceTraveled) miles")
-//    print("| Fuel:      | \(myPlane.fuelLevel) gallons")
-//    print("| Max Fuel:  | \(myPlane.maxFuel) gallons")
-//    print("| MPG:       | \(myPlane.milesPerGallon)")
-//    print("| Fuel Bill: | \(myPlane.fuelCost)")
+    print("| Distance:  | \(myPlane.distanceTraveled) miles")
+    print("| Fuel:      | \(myPlane.fuelLevel) gallons")
+    print("| Max Fuel:  | \(myPlane.maxFuel) gallons")
+    print("| MPG:       | \(myPlane.milesPerGallon)")
+    print("| Fuel Bill: | \(myPlane.fuelCost)")
 }
 
 func fly(myPlane : Aviatrix) {
@@ -43,7 +43,7 @@ func fly(myPlane : Aviatrix) {
         if fuelCheck(myPlane: myPlane, destination : desiredLocation) {
             myPlane.flyTo(destination: desiredLocation)
             print("🛬 You've arrived in \(desiredLocation)!")
-            // This is not returning my correct location..... only sometimes?
+            // This is not returning my new correct location..... only sometimes? Is it b/c dictionaries are unordered????
             gauges(myPlane: myPlane)
         }
     }
@@ -54,12 +54,18 @@ func fly(myPlane : Aviatrix) {
 }
 
 func refuel(myPlane : Aviatrix) {
-    let refuelData = myPlane.refuel()
+    _ = myPlane.refuel()
+    let data = AviatrixData().fuelPrices
+    let fuelNeeded = (5000.0 - Double(myPlane.fuelLevel))
+    let totalCost = fuelNeeded * Double(data[myPlane.location]!)
     
     print("Refueling...")
-    print("⛽ Here in _________, jet fuel costs _________")
-    print("⛽ You refueled _________ gallons totaling _________")
+    print("⛽ Here in \(myPlane.location), jet fuel costs $\(data[myPlane.location]!)")
+    // Not totally sure how we're accessing the cost above... why the $?
+    print("⛽ You refueled \(fuelNeeded) gallons totaling \(totalCost).")
 }
+
+
 
 func fuelCheck(myPlane : Aviatrix, destination : String) -> Bool {
 //    let distanceToTravel =  Double(myPlane.distanceTo(target : destination))
